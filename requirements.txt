@@ -1,0 +1,8 @@
+sympy
+# IF benchmarks
+absl-py
+langdetect
+nltk
+immutabledict
+emoji
+syllapy

@@ -146,6 +146,49 @@ bash scripts/run_teacher_server.sh # Start Teacher Server
 bash scripts/train_zeda_glm_opd.sh # After the teacher server starts, run OPD
 ```
 
+### Evaluation
+
+We provide a unified evaluation pipeline covering the released math, code, instruction-following, and science benchmarks. To reproduce the reported results, first download the benchmark data from Hugging Face to `evaluation/benchmark`:
+
+```bash
+cd ZEDA
+hf download TsinghuaC3I/ZEDA-Evaluation \
+  --repo-type dataset \
+  --local-dir evaluation/benchmark
+```
+
+Then install the required evaluation dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Next, configure `evaluation/run_sglang_server.sh` by specifying:
+
+- `MODEL_PATH`: path to the evaluated model
+- `TP_SIZE`: tensor parallel size
+- `PORT`: server port
+
+Launch the SGLang server with:
+
+```bash
+bash evaluation/run_sglang_server.sh
+```
+
+Once the server is ready, configure `evaluation/run_evaluation.sh` by setting:
+
+- `MODEL_NAME`: model name used in output filenames
+- `MODEL_PATH`: path to the evaluated model
+- `SERVER_URL`: server endpoint, for example `http://0.0.0.0:$PORT/generate`
+
+Then start the evaluation pipeline:
+
+```bash
+bash evaluation/run_evaluation.sh
+```
+
+The script iterates over all released benchmarks, stores raw generations in `evaluation/raw_output/`, and finally invokes `compute_reward.py` to aggregate the evaluation metrics.
+
 ### Models and Datasets
 
 We release our adapted dynamic MoE models and rollout data in Huggingface:
