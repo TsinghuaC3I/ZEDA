@@ -136,12 +136,14 @@ ZEDA consists of zero-expert injection, SFT, and OPD. You can run the following 
 # For Qwen3-30B-A3B
 bash scripts/train_zeda_qwen_sft.sh # SFT
 bash scripts/convert_torch_dist_to_hf.sh # Convert Model
-bash scripts/train_zeda_qwen_opd.sh # OPD
+bash scripts/run_teacher_server.sh # Start Teacher Server
+bash scripts/train_zeda_qwen_opd.sh # After the teacher server starts, run OPD
 
 # For GLM-4.7-Flash
 bash scripts/train_zeda_glm_sft.sh # SFT
 bash scripts/convert_torch_dist_to_hf.sh # Convert Model
-bash scripts/train_zeda_glm_opd.sh # OPD
+bash scripts/run_teacher_server.sh # Start Teacher Server
+bash scripts/train_zeda_glm_opd.sh # After the teacher server starts, run OPD
 ```
 
 ### Models and Datasets
