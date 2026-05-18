@@ -2,7 +2,7 @@
 
 # Post-Trained MoE Can Skip Half Experts via Self-Distillation
 
-[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/)  [![Github](https://img.shields.io/badge/ZEDA-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TsinghuaC3I/ZEDA) [![HuggingFace](https://img.shields.io/badge/HuggingFace-%23FFD14D?style=for-the-badge&logo=huggingface&logoColor=black)](https://)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/)  [![Github](https://img.shields.io/badge/ZEDA-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TsinghuaC3I/ZEDA) [![HuggingFace](https://img.shields.io/badge/HuggingFace-%23FFD14D?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/collections/TsinghuaC3I/zeda)
 
 </div>
 
@@ -77,29 +77,56 @@ docker run --rm --gpus all --ipc=host --shm-size=16g \
 
 After pull and start the docker container, you simply need to install our modified versions of SGLang and slime:
 ```bash
-cd sglang/python
+cd zeda/sglang/python
 pip install -e . --no-deps
-git apply path-to-slime/docker/patch/latest/sglang.patch
+git apply ../../slime/docker/patch/latest/sglang.patch
 
-cd slime
+cd ../../transformers
+pip install -e . --no-deps
+
+cd ../slime
 pip install -e . --no-deps
 ```
 
 ### Data Preparation
 
 ZEDA uses 60k prompts including math, code, and chat data, and the corresponding self-distillation rollouts. 
-  - **Prompts**: The prompts are used for rollout and OPD. The prompts are chosen from [AceReason-1.1-SFT](https://huggingface.co/datasets/nvidia/AceReason-1.1-SFT) and [Llama-Nemotron-Post-Training-Dataset](https://huggingface.co/datasets/nvidia/Llama-Nemotron-Post-Training-Dataset), and we release them in [xxx/xxx](https://).
-  - **Rollouts**: The rollouts are used for SFT. You need to use the specific post-trained MoE model intended for adaptation to perform the rollout. If you are using Qwen3-30B-A3B or GLM-4.7-Flash as the original post-trained MoE model, you can directly utilize our released rollout results [xxx/xxx](https://).
+  - **Prompts**: The prompts are used for rollout and OPD. The prompts are chosen from [AceReason-1.1-SFT](https://huggingface.co/datasets/nvidia/AceReason-1.1-SFT) and [Llama-Nemotron-Post-Training-Dataset](https://huggingface.co/datasets/nvidia/Llama-Nemotron-Post-Training-Dataset), and we release them in [ZEDA](https://huggingface.co/datasets/TsinghuaC3I/ZEDA).
+  - **Rollouts**: The rollouts are used for SFT. You need to use the specific post-trained MoE model intended for adaptation to perform the rollout. You can also directly utilize our released rollout results [ZEDA](https://huggingface.co/datasets/TsinghuaC3I/ZEDA).
 
 After downloading the data, please put them in the `data` folder.
 
 
 ### Model Preparation
 
-After downloading the specific post-trained MoE model intended for adaptation from Huggingface, please convert the model into a format compatible with Megatron:
+After downloading the specific post-trained MoE model intended for adaptation from Huggingface, please first convert the model into a dynamic one through zero expert injection:
 ```bash
-xxx
+python scripts/convert-hf-to-ZCE.py --input-dir path_Qwen3-30B-A3B --output-dir path_Qwen3-30B-A3B-dynamic --new-num-experts 64 # for Qwen3-30B-A3B
+
+python scripts/convert-hf-to-ZCE.py --input-dir path_GLM-4.7-Flash --output-dir path_GLM-4.7-Flash-dynamic --new-num-experts 32 # for GLM-4.7-Flash
 ```
+
+Then modify the `config.json` in the output Dynamic MoE dir, modify the `"architectures"` and add `"use_zce_mask"`, `"zce_nums"`, and `"zce_types"`. For Qwen3-30B-A3B:
+```json
+"architectures": ["Qwen3MoePlusPlusForCausalLM"],
+"use_zce_mask": false,
+"zce_nums": [64],
+"zce_types": ["zero"]
+```
+
+For GLM-4.7-Flash:
+```json
+"architectures": ["Glm4MoeLitePlusPlusForCausalLM"],
+"use_zce_mask": false,
+"zce_nums": [32],
+"zce_types": ["zero"]
+```
+
+Finally, convert the dynamic MoE into the format compatible with Megatron:
+```bash
+bash scripts/convert_hf_to_torch_dist.sh
+```
+
 
 
 ### Training
@@ -107,14 +134,14 @@ ZEDA consists of zero-expert injection, SFT, and OPD. You can run the following 
 
 ```bash
 # For Qwen3-30B-A3B
-bash exp_scripts/train_zeda_qwen.sh # SFT
-bash exp_scripts/train_zeda_qwen.sh # Convert Model
-bash exp_scripts/train_zeda_qwen.sh # OPD
+bash scripts/train_zeda_qwen_sft.sh # SFT
+bash scripts/convert_torch_dist_to_hf.sh # Convert Model
+bash scripts/train_zeda_qwen_opd.sh # OPD
 
 # For GLM-4.7-Flash
-bash exp_scripts/train_zeda_glm.sh # SFT
-bash exp_scripts/train_zeda_glm.sh # Convert Model
-bash exp_scripts/train_zeda_glm.sh # OPD
+bash scripts/train_zeda_glm_sft.sh # SFT
+bash scripts/convert_torch_dist_to_hf.sh # Convert Model
+bash scripts/train_zeda_glm_opd.sh # OPD
 ```
 
 ### Models and Datasets
@@ -123,14 +150,14 @@ We release our adapted dynamic MoE models and rollout data in Huggingface:
 
 | **Model**                          | **Huggingface** |  **Base Model** |
 |-----------------------------------|------------------|------------------|
-| Qwen3-30B-A3B-Dynamic | https://huggingface.co/ |  Qwen3-30B-A3B |
-| GLM-4.7-Flash-Dynamic | https://huggingface.co/ | GLM-4.7-Flash |
+| ZEDA-Qwen3-30B-A3B-Dynamic | https://huggingface.co/TsinghuaC3I/ZEDA-Qwen3-30B-A3B-Dynamic |  Qwen3-30B-A3B |
+| ZEDA-GLM-4.7-Flash-Dynamic | https://huggingface.co/TsinghuaC3I/ZEDA-GLM-4.7-Flash-Dynamic | GLM-4.7-Flash |
 
 
 | **Rollout Data**                          | **Huggingface** |
 |-----------------------------------|------------------|
-| Qwen3-30B-A3B-rollout-60k | https://huggingface.co/ |
-| GLM-4.7-Flash-rollout-60k | https://huggingface.co/ |
+| ZEDA-Qwen3-30B-A3B-rollout-60k | https://huggingface.co/datasets/TsinghuaC3I/ZEDA |
+| ZEDA-GLM-4.7-Flash-rollout-60k | https://huggingface.co/datasets/TsinghuaC3I/ZEDA |
 
 
 # 📊Main Results
