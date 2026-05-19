@@ -64,9 +64,9 @@ for BENCHMARK_NAME in "${BENCHMARK_LIST[@]}"; do
   BENCHMARK_N="${BENCHMARK_N_MAP[$BENCHMARK_NAME]:-$DEFAULT_N}"
   BENCHMARK_LEN="${BENCHMARK_LEN_MAP[$BENCHMARK_NAME]:-$DEFAULT_LEN}"
   echo "========== Running benchmark: ${BENCHMARK_NAME} (n=${BENCHMARK_N}) =========="
-  python rollout_manager.py \
-    --input  ./benchmark/${BENCHMARK_NAME}.jsonl \
-    --output ./raw_output/${BENCHMARK_NAME}-${MODEL_NAME}.jsonl \
+  python evaluation/rollout_manager.py \
+    --input  ./evaluation/benchmark/${BENCHMARK_NAME}.jsonl \
+    --output ./evaluation/raw_output/${BENCHMARK_NAME}-${MODEL_NAME}.jsonl \
     --raw-url $SERVER_URL \
     --api-mode raw \
     --enable-routed-experts-stats \
@@ -81,4 +81,4 @@ for BENCHMARK_NAME in "${BENCHMARK_LIST[@]}"; do
     --top-p $DEFAULT_TOP_P
 done
 
-python compute_reward.py --pattern "*$MODEL_NAME.jsonl"
+python evaluation/compute_reward.py --pattern "*$MODEL_NAME.jsonl"

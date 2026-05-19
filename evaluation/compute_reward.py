@@ -909,7 +909,7 @@ def parse_args():
     parser.add_argument("--num-process-evaluate", type=int, default=12)
     parser.add_argument("--timeout", type=int, default=6)
     parser.add_argument("--debug", action="store_true")
-    parser.add_argument("--raw-output-dir", default="raw_output/0311")
+    parser.add_argument("--raw-output-dir", default="raw_output/")
     parser.add_argument("--pattern", default="*.jsonl")
     return parser.parse_args()
 
