@@ -80,9 +80,9 @@ After pull and start the docker container, you simply need to install our modifi
 cd zeda/sglang/python
 pip install -e . --no-deps
 cd ..
-git apply ../slime/docker/patch/latest/sglang.patch
+patch -p1 < ../slime/docker/patch/latest/sglang.patch
 
-cd ../../transformers
+cd ../transformers
 pip install -e . --no-deps
 
 cd ../slime
