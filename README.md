@@ -101,9 +101,9 @@ After downloading the data, please put them in the `data` folder.
 
 After downloading the specific post-trained MoE model intended for adaptation from Huggingface, please first convert the model into a dynamic one through zero expert injection:
 ```bash
-python scripts/convert-hf-to-ZCE.py --input-dir path_Qwen3-30B-A3B --output-dir path_Qwen3-30B-A3B-dynamic --new-num-experts 64 # for Qwen3-30B-A3B
+python scripts/convert-hf-to-ZCE.py --input-dir path_Qwen3-30B-A3B --output-dir path_Qwen3-30B-A3B-dynamic --new-num-experts 192 # for Qwen3-30B-A3B
 
-python scripts/convert-hf-to-ZCE.py --input-dir path_GLM-4.7-Flash --output-dir path_GLM-4.7-Flash-dynamic --new-num-experts 32 # for GLM-4.7-Flash
+python scripts/convert-hf-to-ZCE.py --input-dir path_GLM-4.7-Flash --output-dir path_GLM-4.7-Flash-dynamic --new-num-experts 96 # for GLM-4.7-Flash
 ```
 
 Then modify the `config.json` in the output Dynamic MoE dir, modify the `"architectures"` and add `"use_zce_mask"`, `"zce_nums"`, and `"zce_types"`. For Qwen3-30B-A3B:
