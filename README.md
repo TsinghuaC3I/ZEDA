@@ -196,14 +196,14 @@ We release our adapted dynamic MoE models and rollout data in Huggingface:
 
 | **Model**                          | **Huggingface** |  **Base Model** |
 |-----------------------------------|------------------|------------------|
-| ZEDA-Qwen3-30B-A3B-Dynamic | https://huggingface.co/TsinghuaC3I/ZEDA-Qwen3-30B-A3B-Dynamic |  Qwen3-30B-A3B |
-| ZEDA-GLM-4.7-Flash-Dynamic | https://huggingface.co/TsinghuaC3I/ZEDA-GLM-4.7-Flash-Dynamic | GLM-4.7-Flash |
+| ZEDA-Qwen3-30B-A3B-Dynamic | [TsinghuaC3I/ZEDA-Qwen3-30B-A3B-Dynamic](https://huggingface.co/TsinghuaC3I/ZEDA-Qwen3-30B-A3B-Dynamic) |  Qwen3-30B-A3B |
+| ZEDA-GLM-4.7-Flash-Dynamic | [TsinghuaC3I/ZEDA-GLM-4.7-Flash-Dynamic](https://huggingface.co/TsinghuaC3I/ZEDA-GLM-4.7-Flash-Dynamic) | GLM-4.7-Flash |
 
 
 | **Rollout Data**                          | **Huggingface** |
 |-----------------------------------|------------------|
-| ZEDA-Qwen3-30B-A3B-rollout-60k | https://huggingface.co/datasets/TsinghuaC3I/ZEDA |
-| ZEDA-GLM-4.7-Flash-rollout-60k | https://huggingface.co/datasets/TsinghuaC3I/ZEDA |
+| ZEDA-Qwen3-30B-A3B-rollout-60k | [TsinghuaC3I/ZEDA](https://huggingface.co/datasets/TsinghuaC3I/ZEDA) |
+| ZEDA-GLM-4.7-Flash-rollout-60k | [TsinghuaC3I/ZEDA](https://huggingface.co/datasets/TsinghuaC3I/ZEDA) |
 
 
 # 📊Main Results
