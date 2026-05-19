@@ -103,7 +103,7 @@ OPTIMIZER_ARGS=(
    --lr-warmup-fraction 0.1
    --weight-decay 0.1
    --adam-beta1 0.9
-   --adam-beta2 0.98
+   --adam-beta2 0.95
    --moe-aux-loss-coeff ${aux_loss_coeff}
 
    --optimizer-cpu-offload

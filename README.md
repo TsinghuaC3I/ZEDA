@@ -2,7 +2,7 @@
 
 # Post-Trained MoE Can Skip Half Experts via Self-Distillation
 
-[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/)  [![Github](https://img.shields.io/badge/ZEDA-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TsinghuaC3I/ZEDA) [![HuggingFace](https://img.shields.io/badge/HuggingFace-%23FFD14D?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/collections/TsinghuaC3I/zeda)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2605.18643)  [![Github](https://img.shields.io/badge/ZEDA-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TsinghuaC3I/ZEDA) [![HuggingFace](https://img.shields.io/badge/HuggingFace-%23FFD14D?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/collections/TsinghuaC3I/zeda)
 
 </div>
 
@@ -91,8 +91,8 @@ pip install -e . --no-deps
 ### Data Preparation
 
 ZEDA uses 60k prompts including math, code, and chat data, and the corresponding self-distillation rollouts. 
-  - **Prompts**: The prompts are used for rollout and OPD. The prompts are chosen from [AceReason-1.1-SFT](https://huggingface.co/datasets/nvidia/AceReason-1.1-SFT) and [Llama-Nemotron-Post-Training-Dataset](https://huggingface.co/datasets/nvidia/Llama-Nemotron-Post-Training-Dataset), and we release them in [ZEDA](https://huggingface.co/datasets/TsinghuaC3I/ZEDA).
-  - **Rollouts**: The rollouts are used for SFT. You need to use the specific post-trained MoE model intended for adaptation to perform the rollout. You can also directly utilize our released rollout results [ZEDA](https://huggingface.co/datasets/TsinghuaC3I/ZEDA).
+  - **Prompts**: The prompts are used for rollout and OPD. The prompts are chosen from [AceReason-1.1-SFT](https://huggingface.co/datasets/nvidia/AceReason-1.1-SFT) and [Llama-Nemotron-Post-Training-Dataset](https://huggingface.co/datasets/nvidia/Llama-Nemotron-Post-Training-Dataset), and we release them in [ZEDA-prompts-60k](https://huggingface.co/datasets/TsinghuaC3I/ZEDA/blob/main/ZEDA-prompts-60k.jsonl).
+  - **Rollouts**: The rollouts are used for SFT. You need to use the specific post-trained MoE model intended for adaptation to perform the rollout. You can also directly utilize our released rollout results [ZEDA-Qwen3-30B-A3B-rollout-60k](https://huggingface.co/datasets/TsinghuaC3I/ZEDA/blob/main/ZEDA-Qwen3-30B-A3B-rollout-60k.jsonl) and [ZEDA-GLM-4.7-Flash-rollout-60k](https://huggingface.co/datasets/TsinghuaC3I/ZEDA/blob/main/ZEDA-GLM-4.7-Flash-rollout-60k.jsonl).
 
 After downloading the data, please put them in the `data` folder.
 
@@ -234,4 +234,13 @@ For questions about this work, please contact:
 If you find this work helpful, please cite our paper:
 
 ```bibtex
+@misc{lv2026posttrainedmoeskiphalf,
+      title={Post-Trained MoE Can Skip Half Experts via Self-Distillation}, 
+      author={Xingtai Lv and Li Sheng and Kaiyan Zhang and Yichen You and Siyan Gao and Xueheng Luo and Yuxin Zuo and Yuchen Fan and Junlin Yang and Ganqu Cui and Bingning Wang and Fan Yang and Youbang Sun and Ning Ding and Bowen Zhou},
+      year={2026},
+      eprint={2605.18643},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2605.18643}, 
+}
 ```
