@@ -41,7 +41,7 @@ experiment_name=Qwen3-30B-A3B-ZCE-sft-${aux_loss_coeff}-weight-${moe_zero_expert
 # Local path
 data_path=data/ZEDA-Qwen3-30B-A3B-rollout-60k.jsonl
 save_checkpoint_path=results/${experiment_name}
-megatron_code_path=zeda/Megatron-LM-dynn
+megatron_code_path=zeda/Megatron-LM
 
 source "scripts/models/qwen3-30B-A3B-ZCE.sh"
 
@@ -143,7 +143,7 @@ RUNTIME_ENV_JSON="{
 
 ray job submit --address="http://127.0.0.1:8265" \
    --runtime-env-json="${RUNTIME_ENV_JSON}" \
-   -- python3 train_async.py \
+   -- python3 zeda/slime/train_async.py \
    --actor-num-nodes 1 \
    --actor-num-gpus-per-node 8 \
    ${MODEL_ARGS[@]} \

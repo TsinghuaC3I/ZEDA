@@ -79,7 +79,8 @@ After pull and start the docker container, you simply need to install our modifi
 ```bash
 cd zeda/sglang/python
 pip install -e . --no-deps
-git apply ../../slime/docker/patch/latest/sglang.patch
+cd ..
+git apply ../slime/docker/patch/latest/sglang.patch
 
 cd ../../transformers
 pip install -e . --no-deps

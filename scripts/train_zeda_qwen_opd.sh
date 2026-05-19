@@ -28,7 +28,7 @@ LR=5e-6
 ZCE_WEIGHT=2
 
 WANDB_NAME="Qwen3-30B-A3B-ZCE-opd-${PROMPT_NUM}-${SAMPLE_NUM}-lr${LR}_zce-weight-${ZCE_WEIGHT}-v3data"
-megatron_code_path=zeda/Megatron-LM-dynn
+megatron_code_path=zeda/Megatron-LM
 
 TEACHER_PORT=25431
 
@@ -174,7 +174,7 @@ RUNTIME_ENV_JSON="{
 
 ray job submit --address="http://127.0.0.1:8265" \
    --runtime-env-json="${RUNTIME_ENV_JSON}" \
-   -- python3 train.py \
+   -- python3 zeda/slime/train.py \
    --actor-num-nodes 1 \
    --actor-num-gpus-per-node 8 \
    --colocate \
