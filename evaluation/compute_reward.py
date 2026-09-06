@@ -192,6 +192,7 @@ def normalize_if_response(response_data: Optional[Dict[str, Any]]) -> str:
         response_text = response_text.split("</think>")[-1].strip()
     if "<|im_end|>" in response_text:
         response_text = response_text.split("<|im_end|>")[0].strip()
+    response_text = response_text.removesuffix("<|user|>").strip()
     return response_text
 
 
